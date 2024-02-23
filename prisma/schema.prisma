@@ -16,27 +16,6 @@ generator erd {
   provider = "prisma-erd-generator"
 }
 
-generator zod {
-  provider         = "zod-prisma-types"
-  // 自動生成されたファイルが配置されるパス
-  output           = "../src/schema/zod"
-  // ファイル分割の定義
-  useMultipleFiles = true // default is false
-  createInputTypes = false // default is true
-  // createModelTypes                 = false // default is true
-  // addInputTypeValidation           = false // default is true
-  // addIncludeType                   = false // default is true
-  // addSelectType                    = false // default is true
-  // validateWhereUniqueInput         = true // default is false
-  // createOptionalDefaultValuesTypes = true // default is false
-  // createRelationValuesTypes        = true // default is false
-  // createPartialTypes               = true // default is false
-  // useDefaultValidators             = false // default is true
-  // coerceDate                       = false // default is true
-  // writeNullishInModelTypes         = true // default is false
-  // prismaClientPath                 = "./path/to/prisma/client" // default is client output path
-}
-
 model Tenant {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
