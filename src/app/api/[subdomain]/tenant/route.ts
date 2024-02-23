@@ -5,10 +5,9 @@ export const config = {
   runtime: "experimental-edge",
 }
 
-export const GET = async (req: NextRequest) => {
+export const GET = async (_req: NextRequest, { params }: { params: { subdomain: string } }) => {
   try {
-    // URLパラメータからsubdomainを取得
-    const subdomain = req.nextUrl.pathname.split("/").pop()
+    const subdomain = decodeURIComponent(params.subdomain)
 
     if (!subdomain) {
       return new NextResponse("Not Found", {
