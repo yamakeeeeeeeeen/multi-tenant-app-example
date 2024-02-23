@@ -3,10 +3,10 @@
 import NextLink from "next/link"
 import { NextPage } from "next"
 import useSWR from "swr"
-import { Tenant } from "@/schema/zod"
 import { Box, Heading, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react"
 import { path } from "@/constants/path"
 import { PageProps } from "@/types/pageProps"
+import { Tenant } from "@/schema/zod"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
