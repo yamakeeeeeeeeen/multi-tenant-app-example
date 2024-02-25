@@ -31,9 +31,9 @@ model Tenant {
 }
 
 model Account {
-  id           String @id @default(uuid())
-  email        String @unique
-  passwordHash String
+  id String @id @default(uuid())
+  // email        String @unique /// TODO: 認証機能をつけるときに検討する
+  // passwordHash String /// TODO: 認証機能をつけるときに検討する
 
   tenantId        String           @unique
   tenant          Tenant           @relation(fields: [tenantId], references: [id])
