@@ -1,5 +1,5 @@
 import { Button, FormControl, FormLabel, Heading, HStack, Input, Radio, RadioGroup, VStack } from "@chakra-ui/react"
-import { FC, FormEvent, useCallback } from "react"
+import { FC, useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { UserForm } from "@/schema/zod/modelSchema/UserSchema"
 import { path } from "@/constants/path"
