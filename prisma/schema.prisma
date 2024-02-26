@@ -20,8 +20,9 @@ model Tenant {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   name      String
-  subdomain String   @unique
+  subdomain String @unique
 
   Account         Account[]
   EmployeeAccount EmployeeAccount[]
@@ -31,20 +32,25 @@ model Tenant {
 }
 
 model Account {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // email        String @unique /// TODO: 認証機能をつけるときに検討する
   // passwordHash String /// TODO: 認証機能をつけるときに検討する
 
-  tenantId        String           @unique
+  tenantId        String
   tenant          Tenant           @relation(fields: [tenantId], references: [id])
   EmployeeAccount EmployeeAccount?
   UserAccount     UserAccount?
 }
 
 model EmployeeAccount {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  tenantId  String    @unique
+  tenantId  String
   tenant    Tenant    @relation(fields: [tenantId], references: [id])
   accountId String    @unique
   account   Account   @relation(fields: [accountId], references: [id])
@@ -52,9 +58,11 @@ model EmployeeAccount {
 }
 
 model UserAccount {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  tenantId  String  @unique
+  tenantId  String
   tenant    Tenant  @relation(fields: [tenantId], references: [id])
   accountId String  @unique
   account   Account @relation(fields: [accountId], references: [id])
@@ -62,7 +70,10 @@ model UserAccount {
 }
 
 model Employee {
-  id                  String    @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name                String
   kana                String
   gender              String
@@ -84,14 +95,17 @@ model Employee {
   email               String    @unique
   comment             String?
 
-  tenantId          String          @unique
+  tenantId          String
   tenant            Tenant          @relation(fields: [tenantId], references: [id])
   employeeAccountId String          @unique
   employeeAccount   EmployeeAccount @relation(fields: [employeeAccountId], references: [id])
 }
 
 model User {
-  id            String   @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name          String
   kana          String
   birthday      DateTime
@@ -105,7 +119,7 @@ model User {
   comment       String?
   isDeleted     Boolean  @default(false)
 
-  tenantId      String      @unique
+  tenantId      String
   tenant        Tenant      @relation(fields: [tenantId], references: [id])
   userAccountId String      @unique
   userAccount   UserAccount @relation(fields: [userAccountId], references: [id])
