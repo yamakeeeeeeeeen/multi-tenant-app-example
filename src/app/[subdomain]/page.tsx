@@ -11,7 +11,7 @@ import { Tenant } from "@/schema/zod"
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
-  const { data, error } = useSWR<Tenant>(path.api.tenants(subdomain), fetcher)
+  const { data, error } = useSWR<Tenant>(path.api.tenants.show(subdomain), fetcher)
 
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
@@ -31,6 +31,11 @@ const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
           <ListItem>
             <Link as={NextLink} href={path.users}>
               利用者一覧
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link as={NextLink} href={path.usersNew}>
+              利用者作成
             </Link>
           </ListItem>
         </UnorderedList>
