@@ -76,5 +76,3 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
     })
   }
 }
-
-// TODO: updatedAtカラムを追加する
