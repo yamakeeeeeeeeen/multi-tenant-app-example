@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, Prisma } from "@prisma/client"
 
 let prisma: PrismaClient
 
@@ -11,4 +11,4 @@ if (!globalForPrisma.prisma) {
 }
 prisma = globalForPrisma.prisma
 
-export { prisma }
+export { prisma, Prisma }
