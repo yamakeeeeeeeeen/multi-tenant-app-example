@@ -6,6 +6,6 @@ export const path = {
   usersEdit: (id: string) => `/users/${id}/edit`,
 
   api: {
-    tenant: (subdomain: string) => `/api/${subdomain}/tenant`,
+    tenants: (subdomain: string) => `/api/${subdomain}/tenant`,
   },
 }

@@ -11,7 +11,7 @@ import { Tenant } from "@/schema/zod"
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
-  const { data, error } = useSWR<Tenant>(path.api.tenant(subdomain), fetcher)
+  const { data, error } = useSWR<Tenant>(path.api.tenants(subdomain), fetcher)
 
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
