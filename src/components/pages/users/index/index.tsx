@@ -15,107 +15,22 @@ import {
   Tr,
 } from "@chakra-ui/react"
 import { FC } from "react"
+import { path } from "@/constants/path"
+import useSWR from "swr"
+import { User } from "@/schema/zod"
 
-const dummyUsers = [
-  {
-    id: 1,
-    name: "山田太郎",
-    kana: "やまだたろう",
-    birthday: "2000/01/01",
-    sex: "男性",
-    disability: "重度",
-    livingPostalCode: "123-4567",
-    livingAddress: "東京都新宿区1-2-3",
-    livingTel: "03-1234-5678",
-    postalCode: "123-4567",
-    address: "東京都新宿区1-2-3",
-    tel: "03-1234-5678",
-    createdAt: "2021/01/01",
-    comment: "コメント1",
-  },
-  {
-    id: 2,
-    name: "佐藤二郎",
-    kana: "さとうじろう",
-    birthday: "2000/02/02",
-    sex: "男性",
-    disability: "中度",
-    livingPostalCode: "234-5678",
-    livingAddress: "神奈川県横浜市4-5-6",
-    livingTel: "045-1234-5678",
-    postalCode: "234-5678",
-    address: "神奈川県横浜市4-5-6",
-    tel: "045-1234-5678",
-    createdAt: "2021/02/02",
-    comment: "コメント2",
-  },
-  {
-    id: 3,
-    name: "鈴木一郎",
-    kana: "すずきいちろう",
-    birthday: "2000/03/03",
-    sex: "男性",
-    disability: "軽度",
-    livingPostalCode: "345-6789",
-    livingAddress: "埼玉県さいたま市7-8-9",
-    livingTel: "048-1234-5678",
-    postalCode: "345-6789",
-    address: "埼玉県さいたま市7-8-9",
-    tel: "048-1234-5678",
-    createdAt: "2021/03/03",
-    comment: "コメント3",
-  },
-  {
-    id: 4,
-    name: "田中花子",
-    kana: "たなかはなこ",
-    birthday: "2000/04/04",
-    sex: "女性",
-    disability: "なし",
-    livingPostalCode: "456-7890",
-    livingAddress: "千葉県千葉市10-11-12",
-    livingTel: "043-1234-5678",
-    postalCode: "456-7890",
-    address: "千葉県千葉市10-11-12",
-    tel: "043-1234-5678",
-    createdAt: "2021/04/04",
-    comment: "コメント4",
-  },
-  {
-    id: 5,
-    name: "和田あきこ",
-    kana: "わだあきこ",
-    birthday: "2000/05/05",
-    sex: "女性",
-    disability: "重度",
-    livingPostalCode: "567-8901",
-    livingAddress: "北海道札幌市13-14-15",
-    livingTel: "011-1234-5678",
-    postalCode: "567-8901",
-    address: "北海道札幌市13-14-15",
-    tel: "011-1234-5678",
-    createdAt: "2021/05/05",
-    comment: "コメント5",
-  },
-  {
-    id: 6,
-    name: "木村次郎",
-    kana: "きむらじろう",
-    birthday: "2000/06/06",
-    sex: "男性",
-    disability: "軽度",
-    livingPostalCode: "678-9012",
-    livingAddress: "大阪府大阪市16-17-18",
-    livingTel: "06-1234-5678",
-    postalCode: "678-9012",
-    address: "大阪府大阪市16-17-18",
-    tel: "06-1234-5678",
-    createdAt: "2021/06/06",
-    comment: "コメント6",
-  },
-]
+type Props = {
+  subdomain: string
+}
 
-export const Page: FC = () => {
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+export const Page: FC<Props> = ({ subdomain }) => {
+  const { data, error } = useSWR<User[]>(path.api.users.index(subdomain), fetcher)
+
+  if (error) return <div>Failed to load</div>
+  if (!data) return <div>Loading...</div>
+
   return (
     <>
       <Heading as="h1" size="md" pb={4}>
@@ -162,21 +77,18 @@ export const Page: FC = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {dummyUsers.map((user) => {
+            {data.map((user) => {
               const {
                 id,
                 name,
                 kana,
                 birthday,
-                sex,
-                disability,
-                livingPostalCode,
-                livingAddress,
-                livingTel,
+                gender,
                 postalCode,
                 address,
-                tel,
-                createdAt,
+                addressDetail,
+                phone,
+                careLevel,
                 comment,
               } = user
 
@@ -204,16 +116,17 @@ export const Page: FC = () => {
                     <Text fontSize="xs">{name}</Text>
                     <Text fontSize="xs">{kana}</Text>
                     <Text fontSize="xs">
-                      {birthday} {sex}
+                      {birthday} {gender}
                     </Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{disability}</Text>
+                    <Text fontSize="xs">{careLevel}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{livingPostalCode}</Text>
-                    <Text fontSize="xs">{livingAddress}</Text>
-                    <Text fontSize="xs">{livingTel}</Text>
+                    <Text fontSize="xs">{postalCode}</Text>
+                    <Text fontSize="xs">{address}</Text>
+                    <Text fontSize="xs">{addressDetail}</Text>
+                    <Text fontSize="xs">{phone}</Text>
                   </Td>
                   <Td>
                     <Button size="xs" variant="outline">
@@ -245,10 +158,11 @@ export const Page: FC = () => {
                   <Td>
                     <Text fontSize="xs">{postalCode}</Text>
                     <Text fontSize="xs">{address}</Text>
-                    <Text fontSize="xs">{tel}</Text>
+                    <Text fontSize="xs">{addressDetail}</Text>
+                    <Text fontSize="xs">{phone}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{createdAt}</Text>
+                    <Text fontSize="xs">TODO</Text>
                     <Text fontSize="xs">{comment}</Text>
                   </Td>
                 </Tr>

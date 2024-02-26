@@ -7,6 +7,42 @@ export const config = {
   runtime: "experimental-edge",
 }
 
+export const GET = async (req: NextRequest, { params }: { params: { subdomain: string } }) => {
+  try {
+    const subdomain = decodeURIComponent(params.subdomain)
+
+    const tenant = await prisma.tenant.findUnique({
+      where: {
+        subdomain: subdomain,
+      },
+    })
+
+    if (!tenant) {
+      return new NextResponse("Tenant not found", {
+        status: 404,
+      })
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        tenantId: tenant.id,
+      },
+    })
+
+    return new NextResponse(JSON.stringify(users), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  } catch (error) {
+    console.error(error)
+    return new NextResponse("Internal Server Error", {
+      status: 500,
+    })
+  }
+}
+
 export const POST = async (req: NextRequest, { params }: { params: { subdomain: string } }) => {
   const subdomain = decodeURIComponent(params.subdomain)
 
