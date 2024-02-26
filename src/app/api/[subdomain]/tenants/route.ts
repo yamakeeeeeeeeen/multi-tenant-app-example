@@ -40,35 +40,3 @@ export const GET = async (_req: NextRequest, { params }: { params: { subdomain: 
     })
   }
 }
-
-export const POST = async (req: NextRequest) => {
-  try {
-    const body = await req.json()
-    const { name, subdomain } = body
-
-    if (!name || !subdomain) {
-      return new NextResponse("Missing fields", {
-        status: 400,
-      })
-    }
-
-    const newTenant = await prisma.tenant.create({
-      data: {
-        name,
-        subdomain,
-      },
-    })
-
-    return new NextResponse(JSON.stringify(newTenant), {
-      status: 201,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-  } catch (error) {
-    console.error(error)
-    return new NextResponse("Internal Server Error", {
-      status: 500,
-    })
-  }
-}

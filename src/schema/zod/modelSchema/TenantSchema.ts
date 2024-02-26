@@ -9,3 +9,11 @@ export const TenantSchema = z.object({
 })
 
 export type Tenant = z.infer<typeof TenantSchema>
+
+export const TenantFormSchema = TenantSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export type TenantForm = z.infer<typeof TenantFormSchema>
