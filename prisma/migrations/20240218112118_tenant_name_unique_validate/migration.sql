@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Tenant" ALTER COLUMN "name" SET DATA TYPE TEXT,
-ALTER COLUMN "subdomain" SET DATA TYPE TEXT;

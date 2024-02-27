@@ -1,8 +1,19 @@
 -- CreateTable
+CREATE TABLE "Tenant" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "subdomain" TEXT NOT NULL,
+
+    CONSTRAINT "Tenant_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "passwordHash" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "tenantId" TEXT NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
@@ -11,6 +22,8 @@ CREATE TABLE "Account" (
 -- CreateTable
 CREATE TABLE "EmployeeAccount" (
     "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "tenantId" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
 
@@ -20,6 +33,8 @@ CREATE TABLE "EmployeeAccount" (
 -- CreateTable
 CREATE TABLE "UserAccount" (
     "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "tenantId" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
 
@@ -29,6 +44,8 @@ CREATE TABLE "UserAccount" (
 -- CreateTable
 CREATE TABLE "Employee" (
     "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
     "kana" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
@@ -58,6 +75,8 @@ CREATE TABLE "Employee" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
     "kana" TEXT NOT NULL,
     "birthday" TIMESTAMP(3) NOT NULL,
@@ -77,19 +96,10 @@ CREATE TABLE "User" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Account_email_key" ON "Account"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Account_tenantId_key" ON "Account"("tenantId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "EmployeeAccount_tenantId_key" ON "EmployeeAccount"("tenantId");
+CREATE UNIQUE INDEX "Tenant_subdomain_key" ON "Tenant"("subdomain");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "EmployeeAccount_accountId_key" ON "EmployeeAccount"("accountId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserAccount_tenantId_key" ON "UserAccount"("tenantId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserAccount_accountId_key" ON "UserAccount"("accountId");
@@ -98,16 +108,10 @@ CREATE UNIQUE INDEX "UserAccount_accountId_key" ON "UserAccount"("accountId");
 CREATE UNIQUE INDEX "Employee_email_key" ON "Employee"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Employee_tenantId_key" ON "Employee"("tenantId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Employee_employeeAccountId_key" ON "Employee"("employeeAccountId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_tenantId_key" ON "User"("tenantId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_userAccountId_key" ON "User"("userAccountId");
