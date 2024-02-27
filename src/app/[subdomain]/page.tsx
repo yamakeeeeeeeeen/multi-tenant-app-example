@@ -38,6 +38,11 @@ const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
               利用者作成
             </Link>
           </ListItem>
+          <ListItem>
+            <Link as={NextLink} href={path.employees.new}>
+              従業員作成
+            </Link>
+          </ListItem>
         </UnorderedList>
       </Box>
     </main>

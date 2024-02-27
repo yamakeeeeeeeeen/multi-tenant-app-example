@@ -1,4 +1,6 @@
 export * from "./AccountSchema"
+export * from "./EmployeeAccountSchema"
+export * from "./EmployeeSchema"
 export * from "./TenantSchema"
 export * from "./UserAccountSchema"
 export * from "./UserSchema"
