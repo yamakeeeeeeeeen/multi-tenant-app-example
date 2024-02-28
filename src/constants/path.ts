@@ -10,6 +10,9 @@ export const path = {
     show: (id: string) => `/users/${id}`,
     edit: (id: string) => `/users/${id}`,
   },
+  monthlyPlans: {
+    show: "/monthly-plans", // TODO: 年、月、利用者IDをパラメータにする
+  },
 
   api: {
     tenants: {
