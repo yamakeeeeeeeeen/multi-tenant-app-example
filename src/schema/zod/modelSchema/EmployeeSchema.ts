@@ -86,3 +86,31 @@ export const EmployeeFormSchema = EmployeeSchema.omit({
 })
 
 export type EmployeeForm = z.infer<typeof EmployeeFormSchema>
+
+export const JOB_TYPE_LABELS = {
+  manager_and_service_manager: "管理者兼サビ管",
+  service_supervisor: "サービス責任者",
+  care_staff: "介護スタッフ",
+  nurse: "看護師",
+  clerk: "事務員",
+} as const
+
+export const DIVISION1_LABELS = {
+  full_time: "常勤",
+  part_time: "非常勤",
+} as const
+
+export const DIVISION2_LABELS = {
+  permanent_employee: "正社員",
+  full_time_hourly_employee: "時間給常勤",
+  part_time_employee: "パート",
+  night_shift_part_time_employee: "夜勤パート",
+} as const
+
+export const QUALIFICATION_LABELS = {
+  certified_care_worker: "介護福祉士",
+  practical_training_course_graduate: "実務者研修",
+  beginner_training_course_graduate: "初任者研修",
+  severe_in_home_care_level_5: "重度訪問介護5",
+  caregiver: "介護士",
+} as const

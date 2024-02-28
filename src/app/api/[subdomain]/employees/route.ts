@@ -3,6 +3,42 @@ import { EmployeeForm, EmployeeFormSchema } from "@/schema/zod"
 import { prisma } from "@/lib/prisma"
 import { convertDateToISO } from "@/app/api/helpers/convertDateToISO"
 
+export const GET = async (_req: NextRequest, { params }: { params: { subdomain: string } }) => {
+  try {
+    const subdomain = decodeURIComponent(params.subdomain)
+
+    const tenant = await prisma.tenant.findUnique({
+      where: {
+        subdomain: subdomain,
+      },
+    })
+
+    if (!tenant) {
+      return new NextResponse("Tenant not found", {
+        status: 404,
+      })
+    }
+
+    const employees = await prisma.employee.findMany({
+      where: {
+        tenantId: tenant.id,
+      },
+    })
+
+    return new NextResponse(JSON.stringify(employees), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  } catch (error) {
+    console.error(error)
+    return new NextResponse("Internal Server Error", {
+      status: 500,
+    })
+  }
+}
+
 export const POST = async (req: NextRequest, { params }: { params: { subdomain: string } }) => {
   const subdomain = decodeURIComponent(params.subdomain)
 

@@ -5,6 +5,7 @@ export const path = {
   usersNew: "/users/new",
   usersEdit: (id: string) => `/users/${id}/edit`,
   employees: {
+    index: "/employees",
     new: "/employees/new",
   },
 
@@ -18,6 +19,7 @@ export const path = {
       new: (subdomain: string) => `/api/${subdomain}/users`,
     },
     employees: {
+      index: (subdomain: string) => `/api/${subdomain}/employees`,
       new: (subdomain: string) => `/api/${subdomain}/employees`,
     },
   },
