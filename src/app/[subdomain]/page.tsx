@@ -29,12 +29,12 @@ const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
       <Box>
         <UnorderedList>
           <ListItem>
-            <Link as={NextLink} href={path.users}>
+            <Link as={NextLink} href={path.users.index}>
               利用者一覧
             </Link>
           </ListItem>
           <ListItem>
-            <Link as={NextLink} href={path.usersNew}>
+            <Link as={NextLink} href={path.users.new}>
               利用者作成
             </Link>
           </ListItem>

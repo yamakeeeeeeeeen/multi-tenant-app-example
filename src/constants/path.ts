@@ -1,12 +1,14 @@
 export const path = {
   root: "/",
-  users: "/users",
-  user: (id: string) => `/users/${id}`,
-  usersNew: "/users/new",
-  usersEdit: (id: string) => `/users/${id}/edit`,
+  users: {
+    index: "/users",
+    new: "/users/new",
+  },
   employees: {
     index: "/employees",
     new: "/employees/new",
+    show: (id: string) => `/users/${id}`,
+    edit: (id: string) => `/users/${id}`,
   },
 
   api: {
