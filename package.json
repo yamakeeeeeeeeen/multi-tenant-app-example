@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "pnpm run '/^lint:.*/'",
+    "lint:es": "eslint --ext .ts,.tsx src",
+    "lint:prettier": "prettier --check './src/**/*.{ts,tsx}'",
+    "lint:tsc": "tsc --noEmit",
+    "lint:text": "textlint './**/*.{ts,tsx}'",
+    "format": "pnpm run '/^format:.*/'",
+    "format:es": "eslint --fix --ext .ts,.tsx src",
+    "format:prettier": "prettier --write './src/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -30,8 +37,10 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
+    "eslint-config-smarthr": "^6.21.0",
     "prettier": "^3.1.1",
     "prisma-erd-generator": "^1.11.2",
     "typescript": "^5"
