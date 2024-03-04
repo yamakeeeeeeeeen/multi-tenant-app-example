@@ -50,7 +50,7 @@ export const Page: FC<Props> = ({ subdomain }) => {
 
         {allDays.map((day, index) => (
           <GridItem
-            key={day}
+            key={index}
             w="100%"
             h="40"
             bg={index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate() ? "gray.50" : "gray.200"}
