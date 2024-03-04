@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
-import { UserForm, UserFormSchema } from "@/schema/zod"
-import { convertDateToISO } from "@/app/api/helpers/convertDateToISO"
+import { NextRequest, NextResponse } from 'next/server'
+
+import { convertDateToISO } from '@/app/api/helpers/convertDateToISO'
+import { prisma } from '@/lib/prisma'
+import { UserForm, UserFormSchema } from '@/schema/zod'
 
 export const config = {
-  runtime: "experimental-edge",
+  runtime: 'experimental-edge',
 }
 
 export const GET = async (req: NextRequest, { params }: { params: { subdomain: string } }) => {
@@ -13,12 +14,12 @@ export const GET = async (req: NextRequest, { params }: { params: { subdomain: s
 
     const tenant = await prisma.tenant.findUnique({
       where: {
-        subdomain: subdomain,
+        subdomain,
       },
     })
 
     if (!tenant) {
-      return new NextResponse("Tenant not found", {
+      return new NextResponse('Tenant not found', {
         status: 404,
       })
     }
@@ -32,12 +33,12 @@ export const GET = async (req: NextRequest, { params }: { params: { subdomain: s
     return new NextResponse(JSON.stringify(users), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
   } catch (error) {
     console.error(error)
-    return new NextResponse("Internal Server Error", {
+    return new NextResponse('Internal Server Error', {
       status: 500,
     })
   }
@@ -52,19 +53,19 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
     const data = await req.json()
     body = UserFormSchema.parse(data)
   } catch (e) {
-    return new NextResponse("Invalid request", {
+    return new NextResponse('Invalid request', {
       status: 400,
     })
   }
 
   const tenant = await prisma.tenant.findUnique({
     where: {
-      subdomain: subdomain,
+      subdomain,
     },
   })
 
   if (!tenant) {
-    return new NextResponse("Tenant not found", {
+    return new NextResponse('Tenant not found', {
       status: 404,
     })
   }
@@ -102,12 +103,12 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
     return new NextResponse(JSON.stringify({ user }), {
       status: 201,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
   } catch (error) {
     console.error(error)
-    return new NextResponse("Internal Server Error", {
+    return new NextResponse('Internal Server Error', {
       status: 500,
     })
   }

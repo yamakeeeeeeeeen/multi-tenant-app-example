@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client"
+import { Prisma, PrismaClient } from '@prisma/client'
 
 let prisma: PrismaClient
 
@@ -9,6 +9,7 @@ const globalForPrisma = global as unknown as {
 if (!globalForPrisma.prisma) {
   globalForPrisma.prisma = new PrismaClient()
 }
+// eslint-disable-next-line prefer-const
 prisma = globalForPrisma.prisma
 
 export { prisma, Prisma }

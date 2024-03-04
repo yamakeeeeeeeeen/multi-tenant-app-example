@@ -1,9 +1,11 @@
-"use client"
+'use client'
 
-import { ChakraProvider, extendTheme } from "@chakra-ui/react"
-import { FC, PropsWithChildren } from "react"
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { FC, PropsWithChildren, ReactNode } from 'react'
 
-type Props = PropsWithChildren<{}>
+type Props = {
+  children: ReactNode
+}
 
 export const theme = extendTheme({
   components: {
@@ -11,10 +13,10 @@ export const theme = extendTheme({
       variants: {
         simple: {
           th: {
-            borderWidth: "1px",
+            borderWidth: '1px',
           },
           td: {
-            borderWidth: "1px",
+            borderWidth: '1px',
           },
         },
       },

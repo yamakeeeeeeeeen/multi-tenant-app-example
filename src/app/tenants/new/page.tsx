@@ -1,11 +1,10 @@
-"use client"
+'use client'
 
-import { NextPage } from "next"
-import Page from "@/components/pages/tenants/new"
-import { PageProps } from "@/types/pageProps"
+import { NextPage } from 'next'
 
-const TenantsNew: NextPage<PageProps> = () => {
-  return <Page />
-}
+import Page from '@/components/pages/tenants/new'
+import { PageProps } from '@/types/pageProps'
+
+const TenantsNew: NextPage<PageProps> = () => <Page />
 
 export default TenantsNew

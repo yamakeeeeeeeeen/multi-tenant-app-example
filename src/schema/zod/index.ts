@@ -1,1 +1,1 @@
-export * from "./modelSchema"
+export * from './modelSchema'

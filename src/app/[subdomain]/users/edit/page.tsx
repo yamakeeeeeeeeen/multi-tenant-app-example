@@ -1,11 +1,10 @@
-"use client"
+'use client'
 
-import { NextPage } from "next"
-import { PageProps } from "@/types/pageProps"
-import { Page } from "@/components/pages/users/edit"
+import { NextPage } from 'next'
 
-const UserEdit: NextPage<PageProps> = () => {
-  return <Page />
-}
+import { Page } from '@/components/pages/users/edit'
+import { PageProps } from '@/types/pageProps'
+
+const UserEdit: NextPage<PageProps> = () => <Page />
 
 export default UserEdit

@@ -1,5 +1,5 @@
-import { Button, FormControl, FormLabel, Heading, HStack, Input, Radio, RadioGroup, VStack } from "@chakra-ui/react"
-import { FC } from "react"
+import { Button, FormControl, FormLabel, HStack, Heading, Input, Radio, RadioGroup, VStack } from '@chakra-ui/react'
+import { FC } from 'react'
 
 export const Page: FC = () => (
   <>

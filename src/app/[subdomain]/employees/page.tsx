@@ -1,11 +1,10 @@
-"use client"
+'use client'
 
-import { NextPage } from "next"
-import { PageProps } from "@/types/pageProps"
-import { Page } from "@/components/pages/employees/index"
+import { NextPage } from 'next'
 
-const EmployeesIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
-  return <Page subdomain={subdomain} />
-}
+import { Page } from '@/components/pages/employees/index'
+import { PageProps } from '@/types/pageProps'
+
+const EmployeesIndex: NextPage<PageProps> = ({ params: { subdomain } }) => <Page subdomain={subdomain} />
 
 export default EmployeesIndex

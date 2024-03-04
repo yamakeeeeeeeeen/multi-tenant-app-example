@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 const UserAccountSchema = z.object({
   id: z.string().uuid(),

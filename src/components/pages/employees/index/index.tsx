@@ -2,8 +2,8 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
+  Heading,
   Input,
   Table,
   TableContainer,
@@ -13,11 +13,12 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react"
-import { FC } from "react"
-import { path } from "@/constants/path"
-import useSWR from "swr"
-import { DIVISION1_LABELS, DIVISION2_LABELS, Employee, JOB_TYPE_LABELS, QUALIFICATION_LABELS } from "@/schema/zod"
+} from '@chakra-ui/react'
+import { FC } from 'react'
+import useSWR from 'swr'
+
+import { path } from '@/constants/path'
+import { DIVISION1_LABELS, DIVISION2_LABELS, Employee, JOB_TYPE_LABELS, QUALIFICATION_LABELS } from '@/schema/zod'
 
 type Props = {
   subdomain: string
@@ -119,33 +120,33 @@ export const Page: FC<Props> = ({ subdomain }) => {
                   <Td>
                     <Text fontSize="xs">{name}</Text>
                     <Text fontSize="xs">{kana}</Text>
-                    <Text fontSize="xs">{gender ? "男性" : "女性"}</Text>
+                    <Text fontSize="xs">{gender ? '男性' : '女性'}</Text>
                   </Td>
                   <Td>
                     <Text fontSize="xs">{JOB_TYPE_LABELS[jobType]}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{division1 ? DIVISION1_LABELS[division1] : ""}</Text>
+                    <Text fontSize="xs">{division1 ? DIVISION1_LABELS[division1] : ''}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{division2 ? DIVISION2_LABELS[division2] : ""}</Text>
+                    <Text fontSize="xs">{division2 ? DIVISION2_LABELS[division2] : ''}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{qualification ? QUALIFICATION_LABELS[qualification] : ""}</Text>
+                    <Text fontSize="xs">{qualification ? QUALIFICATION_LABELS[qualification] : ''}</Text>
                     <Text fontSize="xs">{color}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{multipleAssignments ? "副業務" : ""}</Text>
+                    <Text fontSize="xs">{multipleAssignments ? '副業務' : ''}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{carDriving ? "あり" : ""}</Text>
+                    <Text fontSize="xs">{carDriving ? 'あり' : ''}</Text>
                   </Td>
                   <Td>
-                    <Text fontSize="xs">{move1hour ? "1H" : ""}</Text>
+                    <Text fontSize="xs">{move1hour ? '1H' : ''}</Text>
                   </Td>
                   <Td>
                     <Text fontSize="xs">{hireDate}</Text>
-                    <Text fontSize="xs">{contractEndDate ? contractEndDate : ""}</Text>
+                    <Text fontSize="xs">{contractEndDate ? contractEndDate : ''}</Text>
                   </Td>
                   <Td>
                     <Text fontSize="xs">{postalCode}</Text>

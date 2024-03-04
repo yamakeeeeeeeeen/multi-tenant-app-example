@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"
-import { EmployeeForm, EmployeeFormSchema } from "@/schema/zod"
-import { prisma } from "@/lib/prisma"
-import { convertDateToISO } from "@/app/api/helpers/convertDateToISO"
+import { NextRequest, NextResponse } from 'next/server'
+
+import { convertDateToISO } from '@/app/api/helpers/convertDateToISO'
+import { prisma } from '@/lib/prisma'
+import { EmployeeForm, EmployeeFormSchema } from '@/schema/zod'
 
 export const GET = async (_req: NextRequest, { params }: { params: { subdomain: string } }) => {
   try {
@@ -9,12 +10,12 @@ export const GET = async (_req: NextRequest, { params }: { params: { subdomain: 
 
     const tenant = await prisma.tenant.findUnique({
       where: {
-        subdomain: subdomain,
+        subdomain,
       },
     })
 
     if (!tenant) {
-      return new NextResponse("Tenant not found", {
+      return new NextResponse('Tenant not found', {
         status: 404,
       })
     }
@@ -28,12 +29,12 @@ export const GET = async (_req: NextRequest, { params }: { params: { subdomain: 
     return new NextResponse(JSON.stringify(employees), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
   } catch (error) {
     console.error(error)
-    return new NextResponse("Internal Server Error", {
+    return new NextResponse('Internal Server Error', {
       status: 500,
     })
   }
@@ -48,19 +49,19 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
     const data = await req.json()
     body = EmployeeFormSchema.parse(data)
   } catch (e) {
-    return new NextResponse("Invalid request", {
+    return new NextResponse('Invalid request', {
       status: 400,
     })
   }
 
   const tenant = await prisma.tenant.findUnique({
     where: {
-      subdomain: subdomain,
+      subdomain,
     },
   })
 
   if (!tenant) {
-    return new NextResponse("Tenant not found", {
+    return new NextResponse('Tenant not found', {
       status: 404,
     })
   }
@@ -99,12 +100,12 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
     return new NextResponse(JSON.stringify({ employee }), {
       status: 201,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
   } catch (error) {
     console.error(error)
-    return new NextResponse("Internal Server Error", {
+    return new NextResponse('Internal Server Error', {
       status: 500,
     })
   }

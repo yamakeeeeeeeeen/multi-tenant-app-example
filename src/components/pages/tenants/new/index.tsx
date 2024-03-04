@@ -1,14 +1,15 @@
-import { Button, FormControl, FormLabel, Heading, HStack, Input, VStack } from "@chakra-ui/react"
-import { FC, useCallback } from "react"
-import { useForm } from "react-hook-form"
-import { TenantForm } from "@/schema/zod"
-import { path } from "@/constants/path"
+import { Button, FormControl, FormLabel, HStack, Heading, Input, VStack } from '@chakra-ui/react'
+import { FC, useCallback } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { path } from '@/constants/path'
+import { TenantForm } from '@/schema/zod'
 
 const Page: FC = () => {
   const { register, handleSubmit } = useForm<TenantForm>({
     defaultValues: {
-      name: "",
-      subdomain: "",
+      name: '',
+      subdomain: '',
     },
   })
 
@@ -16,9 +17,9 @@ const Page: FC = () => {
     console.log(data)
     try {
       const response = await fetch(path.api.tenants.new, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       })
@@ -39,11 +40,11 @@ const Page: FC = () => {
       <VStack as="form" mb={4} onSubmit={handleSubmit(onValid)}>
         <FormControl id="name" width={200}>
           <FormLabel fontSize="xs">企業名</FormLabel>
-          <Input {...register("name")} type="text" size="xs" />
+          <Input {...register('name')} type="text" size="xs" />
         </FormControl>
         <FormControl id="subdomain" width={200}>
           <FormLabel fontSize="xs">サブドメイン</FormLabel>
-          <Input {...register("subdomain")} type="text" size="xs" />
+          <Input {...register('subdomain')} type="text" size="xs" />
         </FormControl>
 
         <HStack>

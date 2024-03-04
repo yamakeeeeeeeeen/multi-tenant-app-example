@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
-import NextLink from "next/link"
-import { NextPage } from "next"
-import useSWR from "swr"
-import { Box, Heading, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react"
-import { path } from "@/constants/path"
-import { PageProps } from "@/types/pageProps"
-import { Tenant } from "@/schema/zod"
+import { Box, Heading, Link, ListItem, Text, UnorderedList } from '@chakra-ui/react'
+import { NextPage } from 'next'
+import NextLink from 'next/link'
+import useSWR from 'swr'
+
+import { path } from '@/constants/path'
+import { Tenant } from '@/schema/zod'
+import { PageProps } from '@/types/pageProps'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 

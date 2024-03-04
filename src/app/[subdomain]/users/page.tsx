@@ -1,11 +1,10 @@
-"use client"
+'use client'
 
-import { Page } from "@/components/pages/users/index"
-import { NextPage } from "next"
-import { PageProps } from "@/types/pageProps"
+import { NextPage } from 'next'
 
-const Users: NextPage<PageProps> = ({ params: { subdomain } }) => {
-  return <Page subdomain={subdomain} />
-}
+import { Page } from '@/components/pages/users/index'
+import { PageProps } from '@/types/pageProps'
+
+const Users: NextPage<PageProps> = ({ params: { subdomain } }) => <Page subdomain={subdomain} />
 
 export default Users

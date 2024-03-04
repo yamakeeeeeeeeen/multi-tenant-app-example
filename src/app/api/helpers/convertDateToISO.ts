@@ -4,6 +4,6 @@
  * @return {string} ISO 8601形式の日付時刻文字列 (例: '2024-01-01T00:00:00.000Z')
  */
 export const convertDateToISO = (dateInput: string): string => {
-  const date = new Date(dateInput + "T00:00:00.000Z") // UTCの午前0時を基準とする
+  const date = new Date(dateInput + 'T00:00:00.000Z') // UTCの午前0時を基準とする
   return date.toISOString()
 }

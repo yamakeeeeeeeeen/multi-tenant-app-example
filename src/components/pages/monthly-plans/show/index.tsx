@@ -1,11 +1,11 @@
-import { FC } from "react"
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react"
+import { Box, Grid, GridItem, Text } from '@chakra-ui/react'
+import { FC } from 'react'
 
 type Props = {
   subdomain: string
 }
 
-const daysOfWeek = ["日", "月", "火", "水", "木", "金", "土"] as const
+const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'] as const
 
 const year = 2024
 const month = 2
@@ -53,7 +53,7 @@ export const Page: FC<Props> = ({ subdomain }) => {
             key={index}
             w="100%"
             h="40"
-            bg={index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate() ? "gray.50" : "gray.200"}
+            bg={index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate() ? 'gray.50' : 'gray.200'}
             p={2}
             boxShadow="sm"
           >

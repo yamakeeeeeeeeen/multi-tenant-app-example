@@ -1,13 +1,14 @@
-import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
+import { NextRequest, NextResponse } from 'next/server'
+
+import { prisma } from '@/lib/prisma'
 
 export const config = {
-  runtime: "experimental-edge",
+  runtime: 'experimental-edge',
 }
 
 export const GET = async (req: NextRequest) => {
   const url = new URL(req.url)
-  const subdomain = url.searchParams.get("subdomain")
+  const subdomain = url.searchParams.get('subdomain')
 
   if (!subdomain) {
     return new NextResponse(JSON.stringify({ isValid: false }), {
@@ -18,13 +19,13 @@ export const GET = async (req: NextRequest) => {
   try {
     const tenant = await prisma.tenant.findUnique({
       where: {
-        subdomain: subdomain,
+        subdomain,
       },
     })
 
     return new NextResponse(JSON.stringify({ isValid: !!tenant }), {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       status: 200,
     })

@@ -6,7 +6,7 @@ export const config = {
   runtime: 'experimental-edge',
 }
 
-export const GET = async (_req: NextRequest, { params }: { params: { subdomain: string } }) => {
+export const GET = async (_req: NextRequest, { params }: { params: { subdomain: string; id: string } }) => {
   try {
     const subdomain = decodeURIComponent(params.subdomain)
 

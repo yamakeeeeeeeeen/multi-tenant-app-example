@@ -2,8 +2,8 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
+  Heading,
   Input,
   Table,
   TableContainer,
@@ -13,11 +13,12 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react"
-import { FC } from "react"
-import { path } from "@/constants/path"
-import useSWR from "swr"
-import { User } from "@/schema/zod"
+} from '@chakra-ui/react'
+import { FC } from 'react'
+import useSWR from 'swr'
+
+import { path } from '@/constants/path'
+import { User } from '@/schema/zod'
 
 type Props = {
   subdomain: string
@@ -78,19 +79,7 @@ export const Page: FC<Props> = ({ subdomain }) => {
           </Thead>
           <Tbody>
             {data.map((user) => {
-              const {
-                id,
-                name,
-                kana,
-                birthday,
-                gender,
-                postalCode,
-                address,
-                addressDetail,
-                phone,
-                careLevel,
-                comment,
-              } = user
+              const { id, name, kana, birthday, gender, postalCode, address, addressDetail, phone, careLevel, comment } = user
 
               return (
                 <Tr key={id}>

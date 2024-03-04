@@ -1,10 +1,10 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 // NOTE: この正規表現はフォーマットの検証のみを行い、日付の有効性（例えば、2月30日が存在しないなど）は検証しません。
 //  より厳密な日付検証が必要な場合は、追加のロジックを実装するか、日付処理ライブラリ（例：date-fnsやmoment.js）を使用することを検討してください。
-const BirthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "無効な誕生日フォーマットです。")
-const PostalCodeSchema = z.string().regex(/^\d{3}-\d{4}$/, "無効な郵便番号フォーマットです。")
-const CareLevelSchema = z.enum(["moderate", "severe", "wheelchair"])
+const BirthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '無効な誕生日フォーマットです。')
+const PostalCodeSchema = z.string().regex(/^\d{3}-\d{4}$/, '無効な郵便番号フォーマットです。')
+const CareLevelSchema = z.enum(['moderate', 'severe', 'wheelchair'])
 
 const UserSchema = z.object({
   id: z.string().uuid(),
@@ -13,7 +13,7 @@ const UserSchema = z.object({
   name: z.string(),
   kana: z.string(),
   birthday: BirthdaySchema,
-  gender: z.enum(["male", "female"]),
+  gender: z.enum(['male', 'female']),
   postalCode: PostalCodeSchema,
   address: z.string(),
   addressDetail: z.string().optional(),

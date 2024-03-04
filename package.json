@@ -10,7 +10,6 @@
     "lint:es": "eslint --ext .ts,.tsx src",
     "lint:prettier": "prettier --check './src/**/*.{ts,tsx}'",
     "lint:tsc": "tsc --noEmit",
-    "lint:text": "textlint './**/*.{ts,tsx}'",
     "format": "pnpm run '/^format:.*/'",
     "format:es": "eslint --fix --ext .ts,.tsx src",
     "format:prettier": "prettier --write './src/**/*.{ts,tsx}'"
