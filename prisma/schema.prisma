@@ -29,6 +29,8 @@ model Tenant {
   UserAccount     UserAccount[]
   Employee        Employee[]
   User            User[]
+  Shift           Shift[]
+  ShiftAssignment ShiftAssignment[]
 }
 
 model Account {
@@ -96,9 +98,10 @@ model Employee {
   comment             String?
 
   tenantId          String
-  tenant            Tenant          @relation(fields: [tenantId], references: [id])
-  employeeAccountId String          @unique
-  employeeAccount   EmployeeAccount @relation(fields: [employeeAccountId], references: [id])
+  tenant            Tenant            @relation(fields: [tenantId], references: [id])
+  employeeAccountId String            @unique
+  employeeAccount   EmployeeAccount   @relation(fields: [employeeAccountId], references: [id])
+  ShiftAssignment   ShiftAssignment[]
 }
 
 model User {
@@ -119,8 +122,43 @@ model User {
   comment       String?
   isDeleted     Boolean  @default(false)
 
-  tenantId      String
-  tenant        Tenant      @relation(fields: [tenantId], references: [id])
-  userAccountId String      @unique
-  userAccount   UserAccount @relation(fields: [userAccountId], references: [id])
+  tenantId        String
+  tenant          Tenant            @relation(fields: [tenantId], references: [id])
+  userAccountId   String            @unique
+  userAccount     UserAccount       @relation(fields: [userAccountId], references: [id])
+  ShiftAssignment ShiftAssignment[]
+}
+
+model Shift {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  date            DateTime @default(now())
+  startTime       DateTime
+  endTime         DateTime
+  support_content String
+  comment         String?
+
+  tenantId    String
+  Tenant      Tenant            @relation(fields: [tenantId], references: [id])
+  assignments ShiftAssignment[]
+}
+
+model ShiftAssignment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  startTime DateTime
+  endTime   DateTime
+
+  tenantId   String
+  Tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  shiftId    String
+  shift      Shift    @relation(fields: [shiftId], references: [id])
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 }
