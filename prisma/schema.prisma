@@ -24,13 +24,13 @@ model Tenant {
   name      String
   subdomain String @unique
 
-  Account         Account[]
-  EmployeeAccount EmployeeAccount[]
-  UserAccount     UserAccount[]
-  Employee        Employee[]
-  User            User[]
-  Shift           Shift[]
-  ShiftAssignment ShiftAssignment[]
+  account         Account[]
+  employeeAccount EmployeeAccount[]
+  userAccount     UserAccount[]
+  employee        Employee[]
+  user            User[]
+  shift           Shift[]
+  shiftAssignment ShiftAssignment[]
 }
 
 model Account {
@@ -43,8 +43,8 @@ model Account {
 
   tenantId        String
   tenant          Tenant           @relation(fields: [tenantId], references: [id])
-  EmployeeAccount EmployeeAccount?
-  UserAccount     UserAccount?
+  employeeAccount EmployeeAccount?
+  userAccount     UserAccount?
 }
 
 model EmployeeAccount {
@@ -101,7 +101,7 @@ model Employee {
   tenant            Tenant            @relation(fields: [tenantId], references: [id])
   employeeAccountId String            @unique
   employeeAccount   EmployeeAccount   @relation(fields: [employeeAccountId], references: [id])
-  ShiftAssignment   ShiftAssignment[]
+  shiftAssignment   ShiftAssignment[]
 }
 
 model User {
@@ -126,7 +126,7 @@ model User {
   tenant          Tenant            @relation(fields: [tenantId], references: [id])
   userAccountId   String            @unique
   userAccount     UserAccount       @relation(fields: [userAccountId], references: [id])
-  ShiftAssignment ShiftAssignment[]
+  shiftAssignment ShiftAssignment[]
 }
 
 model Shift {
@@ -141,7 +141,7 @@ model Shift {
   comment         String?
 
   tenantId    String
-  Tenant      Tenant            @relation(fields: [tenantId], references: [id])
+  tenant      Tenant            @relation(fields: [tenantId], references: [id])
   assignments ShiftAssignment[]
 }
 
@@ -154,7 +154,7 @@ model ShiftAssignment {
   endTime   DateTime
 
   tenantId   String
-  Tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
   shiftId    String
   shift      Shift    @relation(fields: [shiftId], references: [id])
   employeeId String
