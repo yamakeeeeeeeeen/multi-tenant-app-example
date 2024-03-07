@@ -3,6 +3,9 @@ export const path = {
   users: {
     index: '/users',
     new: '/users/new',
+    reservations: {
+      index: (id: string, year: number, month: number) => `/users/${id}/reservations/${year}/${month}`,
+    },
   },
   employees: {
     index: '/employees',
@@ -10,10 +13,6 @@ export const path = {
     show: (id: string) => `/users/${id}`,
     edit: (id: string) => `/users/${id}`,
   },
-  monthlyPlans: {
-    show: '/monthly-plans', // TODO: 年、月、利用者IDをパラメータにする
-  },
-
   api: {
     tenants: {
       new: '/api/tenants',
