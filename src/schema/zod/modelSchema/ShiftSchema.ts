@@ -13,3 +13,12 @@ const ShiftSchema = z.object({
 })
 
 export type Shift = z.infer<typeof ShiftSchema>
+
+export const ShiftFormSchema = ShiftSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  tenantId: true,
+})
+
+export type ShiftForm = z.infer<typeof ShiftFormSchema>
