@@ -3,15 +3,16 @@ import { FC } from 'react'
 
 type Props = {
   subdomain: string
+  id: string
+  year: number
+  month: number
 }
 
 const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'] as const
 
-const year = 2024
-const month = 2
-
-export const Page: FC<Props> = ({ subdomain }) => {
-  console.log(subdomain)
+export const Page: FC<Props> = ({ subdomain, id, year, month }) => {
+  console.log('🚀 ~ subdomain:', subdomain)
+  console.log('🚀 ~ id:', id)
 
   // 指定された年月の初日と月末の日付を取得
   const startDate = new Date(year, month - 1, 1)
