@@ -17,6 +17,7 @@ import { FC, useCallback, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { DayOfWeek } from '@/constants/daysOfWeek'
+import { path } from '@/constants/path'
 import { ShiftForm } from '@/schema/zod'
 
 import { TimeToDateInput } from './TimeToDateInput'
@@ -24,7 +25,14 @@ import { TimeToDateInput } from './TimeToDateInput'
 const formId = 'reservation'
 const initialDay = 1
 
-export const useReservationDialog = (year: number, month: number) => {
+type Props = {
+  subdomain: string
+  id: string
+  year: number
+  month: number
+}
+
+export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [day, setDay] = useState<number>(initialDay)
   const [dayOfWeek, setDayOfWeek] = useState<DayOfWeek | null>(null)
@@ -70,18 +78,40 @@ export const useReservationDialog = (year: number, month: number) => {
     setDay(initialDay)
     setDayOfWeek(null)
     setFormValues(initialDay)
-  }, [onClose, setFormValues])
+    setValue('support_content', '')
+  }, [onClose, setFormValues, setValue])
 
   const onValid = useCallback<SubmitHandler<ShiftForm>>(
-    (data, event) => {
-      console.log('🚀 ~ useReservationDialog ~ data:', data)
+    async (data, event) => {
       event?.preventDefault()
+
+      const { date, startTime, endTime } = data
+
+      try {
+        const response = await fetch(path.api.users.reservations(subdomain, id), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...data,
+            date: date.toISOString(),
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          }),
+        })
+
+        const { shift } = await response.json()
+        console.log(shift)
+      } catch (error) {
+        console.error(error)
+      }
 
       // APIリクエストを実行して予約を追加
       // 例: await addReservation(time);
       onReservationDialogClose()
     },
-    [onReservationDialogClose],
+    [id, onReservationDialogClose, subdomain],
   )
 
   const header = `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`

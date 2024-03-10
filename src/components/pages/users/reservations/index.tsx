@@ -13,9 +13,6 @@ type Props = {
 }
 
 export const Page: FC<Props> = ({ subdomain, id }) => {
-  console.log('🚀 ~ subdomain:', subdomain)
-  console.log('🚀 ~ id:', id)
-
   const searchParams = useSearchParams()
   const year = Number(searchParams.get('year'))
   const month = Number(searchParams.get('month'))
@@ -23,7 +20,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
   useRedirectWithYearAndMonth(year, month)
 
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
-  const { ReservationDialog, onReservationDialogOpen } = useReservationDialog(year, month)
+  const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, id, year, month })
 
   return (
     <>
