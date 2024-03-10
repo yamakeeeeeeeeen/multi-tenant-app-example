@@ -1,6 +1,7 @@
 import {
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   HStack,
   Input,
@@ -11,14 +12,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, useCallback, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { DayOfWeek } from '@/constants/daysOfWeek'
 import { path } from '@/constants/path'
-import { ShiftForm } from '@/schema/zod'
+import { ShiftForm, ShiftFormSchema } from '@/schema/zod'
 
 import { TimeToDateInput } from './TimeToDateInput'
 
@@ -43,13 +47,21 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
     return date
   }, [month, year])
 
-  const { register, handleSubmit, setValue, control } = useForm<ShiftForm>({
+  const {
+    formState: { errors },
+    register,
+    control,
+    setValue,
+    clearErrors,
+    handleSubmit,
+  } = useForm<ShiftForm>({
     defaultValues: {
       date: initialDate,
       startTime: initialDate,
       endTime: initialDate,
       support_content: '',
     },
+    resolver: zodResolver(ShiftFormSchema),
   })
 
   const setFormValues = useCallback(
@@ -79,31 +91,38 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
     setDayOfWeek(null)
     setFormValues(initialDay)
     setValue('support_content', '')
-  }, [onClose, setFormValues, setValue])
+    clearErrors()
+  }, [clearErrors, onClose, setFormValues, setValue])
 
   const onValid = useCallback<SubmitHandler<ShiftForm>>(
     async (data, event) => {
       event?.preventDefault()
 
-      const { date, startTime, endTime } = data
-
       try {
+        const { date, startTime, endTime } = ShiftFormSchema.parse(data)
+        const body = {
+          ...data,
+          date: date.toISOString(),
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+        }
+
         const response = await fetch(path.api.users.reservations(subdomain, id), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            ...data,
-            date: date.toISOString(),
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString(),
-          }),
+          body: JSON.stringify(body),
         })
 
         const { shift } = await response.json()
         console.log(shift)
       } catch (error) {
+        if (error instanceof z.ZodError) {
+          console.error(error.issues)
+          return
+        }
+
         console.error(error)
       }
 
@@ -124,9 +143,10 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
         <ModalCloseButton />
         <ModalBody as="form" id={formId} onSubmit={handleSubmit(onValid)}>
           <HStack>
-            <FormControl id="start-time" width={120}>
+            <FormControl id="start-time" width={120} isInvalid={!!errors.startTime}>
               <FormLabel fontSize="xs">開始時間</FormLabel>
               <TimeToDateInput name="startTime" control={control} date={new Date(year, month - 1, day || 1)} />
+              {errors.startTime && <FormErrorMessage>{errors.startTime.message}</FormErrorMessage>}
             </FormControl>
             <FormControl id="end-time" width={120}>
               <FormLabel fontSize="xs">終了時間</FormLabel>

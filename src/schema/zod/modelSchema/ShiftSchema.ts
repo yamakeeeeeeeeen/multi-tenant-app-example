@@ -21,6 +21,9 @@ export const ShiftFormSchema = ShiftSchema.omit({
   updatedAt: true,
   tenantId: true,
   userId: true,
+}).refine((data) => data.startTime < data.endTime, {
+  message: '開始時間は終了時間より前に設定してください。',
+  path: ['startTime'],
 })
 
 export type ShiftForm = z.infer<typeof ShiftFormSchema>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
 import { ShiftForm, ShiftFormSchema } from '@/schema/zod'
@@ -17,7 +18,15 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
       endTime: new Date(data.endTime),
     })
   } catch (e) {
-    console.log('🚀 ~ POST ~ e:', e)
+    if (e instanceof z.ZodError) {
+      return new NextResponse(JSON.stringify({ error: e.issues }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }
+
     return new NextResponse('Invalid request', {
       status: 400,
     })
