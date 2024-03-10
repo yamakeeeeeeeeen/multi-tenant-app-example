@@ -122,11 +122,11 @@ model User {
   comment       String?
   isDeleted     Boolean  @default(false)
 
-  tenantId        String
-  tenant          Tenant            @relation(fields: [tenantId], references: [id])
-  userAccountId   String            @unique
-  userAccount     UserAccount       @relation(fields: [userAccountId], references: [id])
-  shiftAssignment ShiftAssignment[]
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  userAccountId String      @unique
+  userAccount   UserAccount @relation(fields: [userAccountId], references: [id])
+  Shift         Shift[]
 }
 
 model Shift {
@@ -142,6 +142,8 @@ model Shift {
 
   tenantId    String
   tenant      Tenant            @relation(fields: [tenantId], references: [id])
+  userId      String?
+  User        User?             @relation(fields: [userId], references: [id])
   assignments ShiftAssignment[]
 }
 
@@ -159,6 +161,4 @@ model ShiftAssignment {
   shift      Shift    @relation(fields: [shiftId], references: [id])
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
 }

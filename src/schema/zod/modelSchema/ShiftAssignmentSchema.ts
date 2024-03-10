@@ -9,7 +9,6 @@ const ShiftAssignmentSchema = z.object({
   tenantId: z.string(),
   shiftId: z.string(),
   employeeId: z.string(),
-  userId: z.string(),
 })
 
 export type ShiftAssignment = z.infer<typeof ShiftAssignmentSchema>

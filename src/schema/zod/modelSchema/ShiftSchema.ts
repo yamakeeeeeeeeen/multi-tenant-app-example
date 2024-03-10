@@ -10,6 +10,7 @@ const ShiftSchema = z.object({
   support_content: z.string(),
   comment: z.string().optional(),
   tenantId: z.string(),
+  userId: z.string(),
 })
 
 export type Shift = z.infer<typeof ShiftSchema>
@@ -19,6 +20,7 @@ export const ShiftFormSchema = ShiftSchema.omit({
   createdAt: true,
   updatedAt: true,
   tenantId: true,
+  userId: true,
 })
 
 export type ShiftForm = z.infer<typeof ShiftFormSchema>
