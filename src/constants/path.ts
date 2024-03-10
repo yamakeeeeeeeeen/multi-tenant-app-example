@@ -21,6 +21,7 @@ export const path = {
     users: {
       index: (subdomain: string) => `/api/${subdomain}/users`,
       new: (subdomain: string) => `/api/${subdomain}/users`,
+      reservations: (subdomain: string, id: string) => `/api/${subdomain}/users/${id}/reservations`,
     },
     employees: {
       index: (subdomain: string) => `/api/${subdomain}/employees`,
