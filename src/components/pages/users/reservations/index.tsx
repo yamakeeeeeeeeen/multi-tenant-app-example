@@ -1,20 +1,26 @@
 import { Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
+import { useSearchParams } from 'next/navigation'
 import { FC } from 'react'
 
-import { useCalender } from '@/components/pages/users/reservations/[year]/[month]/useCalendar'
-import { useReservationDialog } from '@/components/pages/users/reservations/[year]/[month]/useReservationDialog'
+import { useCalender } from '@/components/pages/users/reservations/useCalendar'
+import { useRedirectWithYearAndMonth } from '@/components/pages/users/reservations/useRedirectWithQueryParams'
+import { useReservationDialog } from '@/components/pages/users/reservations/useReservationDialog'
 import { daysOfWeek } from '@/constants/daysOfWeek'
 
 type Props = {
   subdomain: string
   id: string
-  year: number
-  month: number
 }
 
-export const Page: FC<Props> = ({ subdomain, id, year, month }) => {
+export const Page: FC<Props> = ({ subdomain, id }) => {
   console.log('🚀 ~ subdomain:', subdomain)
   console.log('🚀 ~ id:', id)
+
+  const searchParams = useSearchParams()
+  const year = Number(searchParams.get('year'))
+  const month = Number(searchParams.get('month'))
+
+  useRedirectWithYearAndMonth(year, month)
 
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
   const { ReservationDialog, onReservationDialogOpen } = useReservationDialog(year, month)

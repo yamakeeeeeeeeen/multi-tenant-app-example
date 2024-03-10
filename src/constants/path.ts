@@ -4,7 +4,7 @@ export const path = {
     index: '/users',
     new: '/users/new',
     reservations: {
-      index: (id: string, year: number, month: number) => `/users/${id}/reservations/${year}/${month}`,
+      index: (id: string) => `/users/${id}/reservations`,
     },
   },
   employees: {

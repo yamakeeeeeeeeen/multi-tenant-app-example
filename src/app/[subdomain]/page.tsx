@@ -50,7 +50,7 @@ const DomainIndex: NextPage<PageProps> = ({ params: { subdomain } }) => {
             </Link>
           </ListItem>
           <ListItem>
-            <Link as={NextLink} href={path.users.reservations.index('928c0fff-f0c6-4059-a87a-f6e7757d96c0', 2024, 3)}>
+            <Link as={NextLink} href={path.users.reservations.index('928c0fff-f0c6-4059-a87a-f6e7757d96c0')}>
               月間計画表詳細
             </Link>
           </ListItem>
