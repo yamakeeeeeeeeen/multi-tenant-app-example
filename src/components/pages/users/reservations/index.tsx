@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useSearchParams } from 'next/navigation'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 
 import { useCalender } from '@/components/pages/users/reservations/useCalendar'
 import { useRedirectWithYearAndMonth } from '@/components/pages/users/reservations/useRedirectWithQueryParams'
@@ -22,6 +22,11 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
   const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, id, year, month })
 
+  const currentMonthDays = useMemo(
+    () => allDays.map((_day, index) => index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()),
+    [allDays, daysFromPrevMonth, endDate],
+  )
+
   return (
     <>
       <Box maxW="container.lg" mx="auto" p={5}>
@@ -35,7 +40,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
           ))}
 
           {allDays.map((day, index) => {
-            const currentMonth = index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()
+            const currentMonth = currentMonthDays[index]
 
             return (
               <GridItem key={index} w="100%" h="40" bg={currentMonth ? 'gray.50' : 'gray.200'} p={2} boxShadow="sm">
@@ -49,14 +54,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
 
                   // 予約がない場合は予約を追加するボタンを表示する
                   <Flex justify="center" alignItems="center" h="100%">
-                    <Button
-                      size="xs"
-                      variant="outline"
-                      onClick={() => {
-                        const dayOfWeek = daysOfWeek[new Date(year, month - 1, day).getDay()]
-                        onReservationDialogOpen(day, dayOfWeek)
-                      }}
-                    >
+                    <Button size="xs" variant="outline" onClick={() => onReservationDialogOpen(day)}>
                       予約を追加
                     </Button>
                   </Flex>

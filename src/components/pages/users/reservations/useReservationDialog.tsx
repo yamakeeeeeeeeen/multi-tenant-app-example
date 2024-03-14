@@ -12,7 +12,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,7 +19,7 @@ import { FC, useCallback, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { DayOfWeek } from '@/constants/daysOfWeek'
+import { DayOfWeek, daysOfWeek } from '@/constants/daysOfWeek'
 import { path } from '@/constants/path'
 import { ShiftForm, ShiftFormSchema } from '@/schema/zod'
 
@@ -75,14 +74,16 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
   )
 
   const onReservationDialogOpen = useCallback(
-    (d: number, dow: DayOfWeek) => {
+    (d: number) => {
+      const dow = daysOfWeek[new Date(year, month - 1, day).getDay()]
+
       setDay(d)
       setDayOfWeek(dow)
       setFormValues(d)
 
       onOpen()
     },
-    [onOpen, setFormValues],
+    [day, month, onOpen, setFormValues, year],
   )
 
   const onReservationDialogClose = useCallback(() => {
