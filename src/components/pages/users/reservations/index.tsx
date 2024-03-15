@@ -1,12 +1,12 @@
-import { Box, Button, Flex, Grid, GridItem, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react'
 import { useSearchParams } from 'next/navigation'
 import { FC, useMemo } from 'react'
 import useSWR from 'swr'
 
 import { useAddReservationDialog } from '@/components/pages/users/reservations/useAddReservationDialog'
 import { useCalender } from '@/components/pages/users/reservations/useCalendar'
+import { useDeleteReservationDialog } from '@/components/pages/users/reservations/useDeleteReservationDialog'
 import { useRedirectWithYearAndMonth } from '@/components/pages/users/reservations/useRedirectWithQueryParams'
-import { useReservationDialog } from '@/components/pages/users/reservations/useReservationDialog'
 import { daysOfWeek } from '@/constants/daysOfWeek'
 import { path } from '@/constants/path'
 import { Reservation } from '@/schema/zod'
@@ -33,6 +33,12 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
 
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
   const { AddReservationDialog, onReservationDialogOpen } = useAddReservationDialog({ subdomain, id, year, month, mutate })
+  const { DeleteReservationDialog, onDeleteReservationDialogOpen } = useDeleteReservationDialog({
+    subdomain,
+    year,
+    month,
+    mutate,
+  })
 
   const currentMonthDays = useMemo(
     () => allDays.map((_day, index) => index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()),
@@ -92,9 +98,18 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
                             <Text textAlign="center" fontSize="sm">
                               {startTime}~{endTime}
                             </Text>
-                            <Button size="xs" variant="outline" onClick={() => {}}>
-                              予約を変更
-                            </Button>
+                            <HStack>
+                              <Button size="xs" variant="outline" onClick={() => {}}>
+                                変更
+                              </Button>
+                              <Button
+                                size="xs"
+                                colorScheme="red"
+                                onClick={() => onDeleteReservationDialogOpen(day, reservation?.id || '')}
+                              >
+                                削除
+                              </Button>
+                            </HStack>
                           </>
                         )
                       })()}
@@ -113,6 +128,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
         </Grid>
       </Box>
       <AddReservationDialog />
+      <DeleteReservationDialog />
     </>
   )
 }
