@@ -21,7 +21,7 @@ import { z } from 'zod'
 
 import { DayOfWeek, daysOfWeek } from '@/constants/daysOfWeek'
 import { path } from '@/constants/path'
-import { ShiftForm, ShiftFormSchema } from '@/schema/zod'
+import { ReservationForm, ReservationFormSchema } from '@/schema/zod'
 
 import { TimeToDateInput } from './TimeToDateInput'
 
@@ -53,14 +53,15 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
     setValue,
     clearErrors,
     handleSubmit,
-  } = useForm<ShiftForm>({
+  } = useForm<ReservationForm>({
     defaultValues: {
       date: initialDate,
       startTime: initialDate,
       endTime: initialDate,
       support_content: '',
+      userId: id,
     },
-    resolver: zodResolver(ShiftFormSchema),
+    resolver: zodResolver(ReservationFormSchema),
   })
 
   const setFormValues = useCallback(
@@ -95,12 +96,12 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
     clearErrors()
   }, [clearErrors, onClose, setFormValues, setValue])
 
-  const onValid = useCallback<SubmitHandler<ShiftForm>>(
+  const onValid = useCallback<SubmitHandler<ReservationForm>>(
     async (data, event) => {
       event?.preventDefault()
 
       try {
-        const { date, startTime, endTime } = ShiftFormSchema.parse(data)
+        const { date, startTime, endTime } = ReservationFormSchema.parse(data)
         const body = {
           ...data,
           date: date.toISOString(),
@@ -108,7 +109,7 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
           endTime: endTime.toISOString(),
         }
 
-        const response = await fetch(path.api.users.reservations(subdomain, id), {
+        const response = await fetch(path.api.reservations.create(subdomain), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -131,7 +132,7 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
       // 例: await addReservation(time);
       onReservationDialogClose()
     },
-    [id, onReservationDialogClose, subdomain],
+    [onReservationDialogClose, subdomain],
   )
 
   const header = `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`

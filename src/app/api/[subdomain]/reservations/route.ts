@@ -2,16 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
-import { ShiftForm, ShiftFormSchema } from '@/schema/zod'
+import { ReservationForm, ReservationFormSchema } from '@/schema/zod'
 
-export const POST = async (req: NextRequest, { params }: { params: { subdomain: string; id: string } }) => {
+export const POST = async (req: NextRequest, { params }: { params: { subdomain: string } }) => {
   const subdomain = decodeURIComponent(params.subdomain)
 
-  let body: ShiftForm
+  let body: ReservationForm
 
   try {
     const data = await req.json()
-    body = ShiftFormSchema.parse({
+    body = ReservationFormSchema.parse({
       ...data,
       date: new Date(data.date),
       startTime: new Date(data.startTime),
@@ -46,7 +46,7 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
 
   const user = await prisma.user.findUnique({
     where: {
-      id: params.id,
+      id: body.userId,
     },
   })
 
@@ -57,7 +57,7 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
   }
 
   try {
-    const shift = await prisma.shift.create({
+    const shift = await prisma.reservation.create({
       data: {
         ...body,
         tenantId: tenant.id,
