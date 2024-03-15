@@ -37,7 +37,7 @@ type Props = {
   mutate: SWRResponse<Reservation[]>['mutate']
 }
 
-export const useReservationDialog = ({ subdomain, id, year, month, mutate }: Props) => {
+export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [day, setDay] = useState<number>(initialDay)
   const [dayOfWeek, setDayOfWeek] = useState<DayOfWeek | null>(null)
@@ -140,7 +140,7 @@ export const useReservationDialog = ({ subdomain, id, year, month, mutate }: Pro
 
   const header = `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`
 
-  const ReservationDialog: FC = () => (
+  const AddReservationDialog: FC = () => (
     <Modal size="xl" isOpen={isOpen} onClose={onReservationDialogClose}>
       <ModalOverlay />
       <ModalContent>
@@ -175,5 +175,5 @@ export const useReservationDialog = ({ subdomain, id, year, month, mutate }: Pro
     </Modal>
   )
 
-  return { ReservationDialog, onReservationDialogOpen }
+  return { AddReservationDialog, onReservationDialogOpen }
 }

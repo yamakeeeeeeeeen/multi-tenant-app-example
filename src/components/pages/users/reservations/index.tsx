@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation'
 import { FC, useMemo } from 'react'
 import useSWR from 'swr'
 
+import { useAddReservationDialog } from '@/components/pages/users/reservations/useAddReservationDialog'
 import { useCalender } from '@/components/pages/users/reservations/useCalendar'
 import { useRedirectWithYearAndMonth } from '@/components/pages/users/reservations/useRedirectWithQueryParams'
 import { useReservationDialog } from '@/components/pages/users/reservations/useReservationDialog'
@@ -31,7 +32,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
   useRedirectWithYearAndMonth(year, month)
 
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
-  const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, id, year, month, mutate })
+  const { AddReservationDialog, onReservationDialogOpen } = useAddReservationDialog({ subdomain, id, year, month, mutate })
 
   const currentMonthDays = useMemo(
     () => allDays.map((_day, index) => index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()),
@@ -111,7 +112,7 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
           })}
         </Grid>
       </Box>
-      <ReservationDialog />
+      <AddReservationDialog />
     </>
   )
 }
