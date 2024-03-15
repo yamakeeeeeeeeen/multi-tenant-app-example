@@ -151,7 +151,7 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
   }
 
   try {
-    const shift = await prisma.reservation.create({
+    const reservation = await prisma.reservation.create({
       data: {
         ...body,
         tenantId: tenant.id,
@@ -159,7 +159,7 @@ export const POST = async (req: NextRequest, { params }: { params: { subdomain: 
       },
     })
 
-    return new NextResponse(JSON.stringify({ shift }), {
+    return new NextResponse(JSON.stringify(reservation), {
       status: 201,
       headers: {
         'Content-Type': 'application/json',

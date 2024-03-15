@@ -17,11 +17,12 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, useCallback, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { SWRResponse } from 'swr'
 import { z } from 'zod'
 
 import { DayOfWeek, daysOfWeek } from '@/constants/daysOfWeek'
 import { path } from '@/constants/path'
-import { ReservationForm, ReservationFormSchema } from '@/schema/zod'
+import { Reservation, ReservationForm, ReservationFormSchema } from '@/schema/zod'
 
 import { TimeToDateInput } from './TimeToDateInput'
 
@@ -33,9 +34,10 @@ type Props = {
   id: string
   year: number
   month: number
+  mutate: SWRResponse<Reservation[]>['mutate']
 }
 
-export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
+export const useReservationDialog = ({ subdomain, id, year, month, mutate }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [day, setDay] = useState<number>(initialDay)
   const [dayOfWeek, setDayOfWeek] = useState<DayOfWeek | null>(null)
@@ -117,8 +119,9 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
           body: JSON.stringify(body),
         })
 
-        const { shift } = await response.json()
-        console.log(shift)
+        const reservation = await response.json()
+
+        mutate((prev) => [...(prev || []), reservation], false)
       } catch (error) {
         if (error instanceof z.ZodError) {
           console.error(error.issues)
@@ -132,7 +135,7 @@ export const useReservationDialog = ({ subdomain, id, year, month }: Props) => {
       // 例: await addReservation(time);
       onReservationDialogClose()
     },
-    [onReservationDialogClose, subdomain],
+    [mutate, onReservationDialogClose, subdomain],
   )
 
   const header = `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`

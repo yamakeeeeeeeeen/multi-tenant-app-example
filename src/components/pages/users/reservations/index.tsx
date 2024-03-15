@@ -22,15 +22,16 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
   const year = Number(searchParams.get('year'))
   const month = Number(searchParams.get('month'))
 
-  const { data: reservations, error } = useSWR<Reservation[]>(
-    path.api.reservations.index(subdomain, { userId: id, year, month }),
-    fetcher,
-  )
+  const {
+    data: reservations,
+    error,
+    mutate,
+  } = useSWR<Reservation[]>(path.api.reservations.index(subdomain, { userId: id, year, month }), fetcher)
 
   useRedirectWithYearAndMonth(year, month)
 
   const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
-  const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, id, year, month })
+  const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, id, year, month, mutate })
 
   const currentMonthDays = useMemo(
     () => allDays.map((_day, index) => index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()),
