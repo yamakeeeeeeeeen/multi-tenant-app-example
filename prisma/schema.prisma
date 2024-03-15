@@ -158,7 +158,7 @@ model Shift {
   tenantId      String
   tenant        Tenant       @relation(fields: [tenantId], references: [id])
   reservationId String
-  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: Cascade)
   employeeId    String
   employee      Employee     @relation(fields: [employeeId], references: [id])
 }
