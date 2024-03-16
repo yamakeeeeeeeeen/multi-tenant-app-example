@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { SWRResponse } from 'swr'
 import { z } from 'zod'
@@ -31,14 +31,15 @@ const initialDay = 1
 
 type Props = {
   subdomain: string
-  id: string
+  userId: string
   year: number
   month: number
   mutate: SWRResponse<Reservation[]>['mutate']
 }
 
-export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: Props) => {
+export const useReservationDialog = ({ subdomain, userId, year, month, mutate }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [reservation, setReservation] = useState<Reservation | null>(null)
   const [day, setDay] = useState<number>(initialDay)
   const [dayOfWeek, setDayOfWeek] = useState<DayOfWeek | null>(null)
 
@@ -55,13 +56,14 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
     setValue,
     clearErrors,
     handleSubmit,
+    reset,
   } = useForm<ReservationForm>({
     defaultValues: {
       date: initialDate,
       startTime: initialDate,
       endTime: initialDate,
       support_content: '',
-      userId: id,
+      userId,
     },
     resolver: zodResolver(ReservationFormSchema),
   })
@@ -77,12 +79,13 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
   )
 
   const onReservationDialogOpen = useCallback(
-    (d: number) => {
+    (d: number, selectedReservation?: Reservation) => {
       const dow = daysOfWeek[new Date(year, month - 1, day).getDay()]
 
       setDay(d)
       setDayOfWeek(dow)
       setFormValues(d)
+      setReservation(selectedReservation || null)
 
       onOpen()
     },
@@ -93,10 +96,19 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
     onClose()
     setDay(initialDay)
     setDayOfWeek(null)
-    setFormValues(initialDay)
-    setValue('support_content', '')
+    setReservation(null)
+    reset()
     clearErrors()
-  }, [clearErrors, onClose, setFormValues, setValue])
+  }, [clearErrors, onClose, reset])
+
+  useEffect(() => {
+    if (reservation) {
+      setValue('date', new Date(reservation.date))
+      setValue('startTime', new Date(reservation.startTime))
+      setValue('endTime', new Date(reservation.endTime))
+      setValue('support_content', reservation.support_content)
+    }
+  }, [reservation, setValue])
 
   const onValid = useCallback<SubmitHandler<ReservationForm>>(
     async (data, event) => {
@@ -111,17 +123,33 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
           endTime: endTime.toISOString(),
         }
 
-        const response = await fetch(path.api.reservations.create(subdomain), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        })
+        if (reservation) {
+          // 更新処理
+          const response = await fetch(path.api.reservations.update(subdomain, reservation.id), {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          })
 
-        const reservation = await response.json()
+          const updatedReservation = await response.json()
 
-        mutate((prev) => [...(prev || []), reservation], false)
+          mutate((prev) => (prev ? prev.map((r) => (r.id === updatedReservation.id ? updatedReservation : r)) : []), false)
+        } else {
+          // 新規作成処理
+          const response = await fetch(path.api.reservations.create(subdomain), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          })
+
+          const newReservation = await response.json()
+
+          mutate((prev) => [...(prev || []), newReservation], false)
+        }
       } catch (error) {
         if (error instanceof z.ZodError) {
           console.error(error.issues)
@@ -131,16 +159,16 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
         console.error(error)
       }
 
-      // APIリクエストを実行して予約を追加
-      // 例: await addReservation(time);
       onReservationDialogClose()
     },
-    [mutate, onReservationDialogClose, subdomain],
+    [mutate, onReservationDialogClose, reservation, subdomain],
   )
 
-  const header = `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`
+  const header = reservation
+    ? `${year}年${month}月${day}日（${dayOfWeek}）の予約を変更する`
+    : `${year}年${month}月${day}日（${dayOfWeek}）の予約をする`
 
-  const AddReservationDialog: FC = () => (
+  const ReservationDialog: FC = () => (
     <Modal size="xl" isOpen={isOpen} onClose={onReservationDialogClose}>
       <ModalOverlay />
       <ModalContent>
@@ -168,12 +196,12 @@ export const useAddReservationDialog = ({ subdomain, id, year, month, mutate }: 
             キャンセル
           </Button>
           <Button form={formId} type="submit" colorScheme="blue">
-            予約
+            {reservation ? '更新' : '予約'}
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
   )
 
-  return { AddReservationDialog, onReservationDialogOpen }
+  return { ReservationDialog, onReservationDialogOpen }
 }

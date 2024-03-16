@@ -36,6 +36,7 @@ export const path = {
         },
       ) => `/api/${subdomain}/reservations?userId=${query.userId}&year=${query.year}&month=${query.month}`,
       create: (subdomain: string) => `/api/${subdomain}/reservations`,
+      update: (subdomain: string, id: string) => `/api/${subdomain}/reservations/${id}`,
       delete: (subdomain: string, id: string) => `/api/${subdomain}/reservations/${id}`,
     },
   },
