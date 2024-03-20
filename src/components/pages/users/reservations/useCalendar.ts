@@ -1,4 +1,4 @@
-export const useCalender = (year: number, month: number) => {
+export const useCalendar = (year: number, month: number) => {
   // 指定された年月の初日と月末の日付を取得
   const startDate = new Date(year, month - 1, 1)
   const endDate = new Date(year, month, 0)

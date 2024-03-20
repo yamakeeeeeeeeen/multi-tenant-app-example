@@ -2,7 +2,7 @@ import { Grid, GridItem, Text } from '@chakra-ui/react'
 import { FC, useMemo } from 'react'
 
 import { CalendarDate } from '@/components/pages/users/reservations/CalendarDate'
-import { useCalender } from '@/components/pages/users/reservations/useCalendar'
+import { useCalendar } from '@/components/pages/users/reservations/useCalendar'
 import { daysOfWeek } from '@/constants/daysOfWeek'
 import { Reservation } from '@/schema/zod'
 
@@ -15,7 +15,7 @@ type Props = {
 }
 
 export const Calendar: FC<Props> = ({ year, month, reservations, onReservationDialogOpen, onDeleteReservationDialogOpen }) => {
-  const { allDays, daysFromPrevMonth, endDate } = useCalender(year, month)
+  const { allDays, daysFromPrevMonth, endDate } = useCalendar(year, month)
 
   const currentMonthDays = useMemo(
     () => allDays.map((_day, index) => index >= daysFromPrevMonth && index < daysFromPrevMonth + endDate.getDate()),
