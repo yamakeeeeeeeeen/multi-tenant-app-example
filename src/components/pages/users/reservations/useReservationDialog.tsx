@@ -50,7 +50,7 @@ export const useReservationDialog = ({ subdomain, userId, year, month, mutate }:
   }, [month, year])
 
   const {
-    formState: { errors },
+    formState: { isSubmitting, errors },
     register,
     control,
     setValue,
@@ -192,10 +192,10 @@ export const useReservationDialog = ({ subdomain, userId, year, month, mutate }:
           </HStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="red" mr={3} onClick={onReservationDialogClose}>
+          <Button colorScheme="red" mr={3} disabled={isSubmitting} onClick={onReservationDialogClose}>
             キャンセル
           </Button>
-          <Button form={formId} type="submit" colorScheme="blue">
+          <Button form={formId} type="submit" colorScheme="blue" disabled={isSubmitting}>
             {reservation ? '更新' : '予約'}
           </Button>
         </ModalFooter>
