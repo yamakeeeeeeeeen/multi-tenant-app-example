@@ -10,7 +10,7 @@ export const isValidYearAndMonth = (year: number, month: number): boolean => {
   return date.getFullYear() === year && date.getMonth() === month - 1
 }
 
-export const useRedirectWithYearAndMonth = (year: number, month: number) => {
+export const useRedirectWithYearAndMonth = (year: number, month: number): boolean => {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -26,4 +26,6 @@ export const useRedirectWithYearAndMonth = (year: number, month: number) => {
       router.replace(redirectUrl)
     }
   }, [month, pathname, router, year])
+
+  return !isValidYearAndMonth(year, month)
 }

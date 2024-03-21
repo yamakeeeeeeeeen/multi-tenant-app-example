@@ -15,20 +15,41 @@ type Props = {
   id: string
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+class ApiError extends Error {
+  info: any
+  status: number
+
+  constructor(message: string, info: any, status: number) {
+    super(message)
+    this.info = info
+    this.status = status
+  }
+}
+
+const fetcher = async (url: string) => {
+  const res = await fetch(url)
+
+  if (!res.ok) {
+    const errorInfo = await res.json()
+    const error = new ApiError('An error occurred while fetching the data.', errorInfo, res.status)
+    throw error
+  }
+
+  return res.json()
+}
 
 export const Page: FC<Props> = ({ subdomain, id }) => {
   const searchParams = useSearchParams()
   const year = Number(searchParams.get('year'))
   const month = Number(searchParams.get('month'))
 
+  const needsRedirect = useRedirectWithYearAndMonth(year, month)
+
   const {
     data: reservations,
     error,
     mutate,
-  } = useSWR<Reservation[]>(path.api.reservations.index(subdomain, { userId: id, year, month }), fetcher)
-
-  useRedirectWithYearAndMonth(year, month)
+  } = useSWR<Reservation[]>(needsRedirect ? null : path.api.reservations.index(subdomain, { userId: id, year, month }), fetcher)
 
   const { ReservationDialog, onReservationDialogOpen } = useReservationDialog({ subdomain, userId: id, year, month, mutate })
   const { DeleteReservationDialog, onDeleteReservationDialogOpen } = useDeleteReservationDialog({
@@ -38,7 +59,15 @@ export const Page: FC<Props> = ({ subdomain, id }) => {
     mutate,
   })
 
-  if (error) return <div>Failed to load</div>
+  if (needsRedirect) return <div>Redirecting...</div>
+
+  if (error) {
+    console.error('Error:', error.message)
+    console.error('Error Info:', error.info)
+    console.error('Error Status:', error.status)
+    return <div>Failed to load</div>
+  }
+
   if (!reservations) return <div>Loading...</div>
 
   return (
