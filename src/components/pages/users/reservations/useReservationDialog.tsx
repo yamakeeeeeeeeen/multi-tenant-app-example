@@ -150,6 +150,8 @@ export const useReservationDialog = ({ subdomain, userId, year, month, mutate }:
 
           mutate((prev) => [...(prev || []), newReservation], false)
         }
+
+        onReservationDialogClose()
       } catch (error) {
         if (error instanceof z.ZodError) {
           console.error(error.issues)
@@ -158,8 +160,6 @@ export const useReservationDialog = ({ subdomain, userId, year, month, mutate }:
 
         console.error(error)
       }
-
-      onReservationDialogClose()
     },
     [mutate, onReservationDialogClose, reservation, subdomain],
   )
