@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { usePathname, useRouter } from 'next/navigation'
 
-import { useRedirectWithYearAndMonth } from './useRedirectWithQueryParams'
+import { isValidYearAndMonth, useRedirectWithYearAndMonth } from './useRedirectWithQueryParams'
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -37,5 +37,26 @@ describe('useRedirectWithYearAndMonth', () => {
     renderHook(() => useRedirectWithYearAndMonth(2023, 13))
 
     expect(mockReplace).toHaveBeenCalledWith(expectedRedirectUrl)
+  })
+})
+
+describe('isValidYearAndMonth', () => {
+  it('有効な年と月が与えられた場合、trueを返すこと', () => {
+    expect(isValidYearAndMonth(2023, 1)).toBe(true)
+    expect(isValidYearAndMonth(2023, 12)).toBe(true)
+    expect(isValidYearAndMonth(2024, 2)).toBe(true)
+  })
+
+  it('無効な月が与えられた場合、falseを返すこと', () => {
+    expect(isValidYearAndMonth(2023, 0)).toBe(false)
+    expect(isValidYearAndMonth(2023, 13)).toBe(false)
+    expect(isValidYearAndMonth(2023, -1)).toBe(false)
+    expect(isValidYearAndMonth(2023, 1.5)).toBe(false)
+  })
+
+  it('無効な年が与えられた場合、falseを返すこと', () => {
+    expect(isValidYearAndMonth(2023.5, 1)).toBe(false)
+    expect(isValidYearAndMonth(2024.8, 6)).toBe(false)
+    expect(isValidYearAndMonth(-2023, 1)).toBe(false)
   })
 })
