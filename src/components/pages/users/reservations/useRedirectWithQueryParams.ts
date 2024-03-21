@@ -2,6 +2,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export const isValidYearAndMonth = (year: number, month: number): boolean => {
+  if (year < 0 || month < 1 || month > 12) {
+    return false
+  }
+
   const date = new Date(year, month - 1)
   return date.getFullYear() === year && date.getMonth() === month - 1
 }
